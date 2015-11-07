@@ -40,21 +40,41 @@ Chronic obstructive pulmonary disease (COPD) is a major cause of mortality world
 \section{Introduction}
 
 
-Chronic obstructive pulmonary disease (COPD) is a major cause of mortality worldwide~\cite{lozano_global_2012}, with approximately 12 million adults in the U.S. having been diagnosed with COPD. Crucially, however, it is estimated that a further 12 million adults in the U.S. have undiagnosed COPD~\cite{nih_chronic_2010}. One of the most common causes of COPD is cigarette smoking, however as many of 10-20\% of COPD patients have never smoked and only a fraction of smokers develop COPD. These insights are suggestive of alternate risk factors such as genetic and environmental. With this in mind, our goal is to ``blend'' external environmental (occupational?) data with the clinical data using a novel blending approach with the hopes of better predicting undiagnosed COPD amongst those hospitalized with pneumonia. Our analysis will take two approaches: the first combines all data sources in an attempt to improve prediction overall, and the second identifies individuals whose COPD diagnosis is not well predicted using the clinical data and examine whether the predictive performance amongst these people can be improved using external variables. 
+Chronic obstructive pulmonary disease (COPD) is a major cause of mortality worldwide~\cite{lozano_global_2012}, with approximately 12 million adults in the U.S. having been diagnosed with COPD. Crucially, however, it is estimated that a further 12 million adults in the U.S. have undiagnosed COPD~\cite{nih_chronic_2010}. One of the most common causes of COPD is cigarette smoking, however as many of 10-20\% of COPD patients have never smoked and only a fraction of smokers develop COPD. These insights are suggestive of alternate risk factors such as genetic and environmental. With this in mind, our goal is to ``blend'' external environmental data with the clinical data using a novel blending approach with the hopes of increasing our ability to predict undiagnosed COPD amongst those hospitalized with pneumonia. . 
 
 
 \section{Data}
 
-The clinical data we will use in this project will include data collected from patients who are a part of the Geisinger Health System. The dataset consists of data from a total population of 88,000, among whom, 1,033 have a ``discharge diagnosis of COPD''. The clinical dataset contains approximately 80 unique variables sourced primarily from medical records and billing records. We will be comparing two sub-populations
+The clinical data we will use in this project will include data collected from patients who are a part of the Geisinger Health System. The dataset consists of data from a total population of 88,000, among whom, 1,033 have a ``discharge diagnosis of COPD''. The clinical dataset contains approximately 80 unique variables sourced primarily from medical records with a few variables sourced from billing records. We will be comparing two sub-populations
 
 \begin{enumerate}
 \item The COPD subpopulation: all patients who have been diagnosed with COPD.
-\item The pneumonia subpopulation: those who are diagnosed at a single visit with pneumonia and subsequently recover. We do not include in this subpopulation those who are re-admitted at multiple visits with pneumonia, since this may be indicative of undiagnosed COPD.
+\item The non-COPD pneumonia subpopulation: those who are diagnosed at a single visit with pneumonia and subsequently recover. We do not include in this subpopulation those who are re-admitted at multiple visits with pneumonia, since this may be indicative of undiagnosed COPD.
 \end{enumerate}
 
 
 
-As a major focus of this project is to blend external data sources with the clinical data described above
+\subsection{``External" data sources}
+
+As a major focus of this project is to blend external data sources with the clinical data described above. This task is poised with a number of challenges. Firstly, to ensure that the imputed data resulting from the blending process (see methods below) is as transparent and believable as possible, it is important that the external data sources come from a population that is similar to our base clinical dataset from Geisinger. Notably, since all Geisinger medical centers are located in Pennsylvania, ideally, we would also like our external data to be from Pennsylvania. Suppose, for example, that we were interested in testing the effect of biomass fuel combustion exposure on COPD and for our clinical population we imputed the extent of biomass fuel combustion exposure based on data sourced from developing countries in which they use a lot more biofuels, then these imputed values will be extremely misleading. and we will describe three possible sources of data. 
+
+Next, we require the data to be ``publicly available'', which we interpreted as ``easily accessible to Geisinger''. As a result, some of our ``external'' data sources include data collected by the Geisinger health system, but not included in the provided COPD clinical dataset. The primary reason for this approach is three-fold: first of all, it is extremely difficult to find individual-level data that is publicly available (presumably due to privacy concerns) AND from a trusted source (i.e. not sourced from some guy sitting in his basement making up numbers for fun); secondly, using data collected by Geisinger ensures that the underlying population mostly matches the population from which the COPD data is drawn, a key concern for the validity of the conclusions drawn from our subsequent analyses. Finally, for the publicly available individual-level data that we could find, it is extremely difficult to find adequate variables to match on. For example, in most cases, the best we could do is matching on age and gender and approximate location, however if we are aiming to impute a variable such as smoking or exposure to biomass fuel combustion, the imputed values is likely to be extremely noisy and not particularly trustworthy (for example, it is highly unlikely that all females, aged 27 who live in Danville, Pennsylvania have the same smoking status; we need more common information between the two datasets.)
+
+The most trusted publicly available data sources we could identify are significantly less granular. For example, 
+
+\subsubsection{Smoking data from the Geisinger psychiatric diseases dataset}
+
+As mentioned above, one of the most common causes of the
+
+
+\subsubsection{Insurance data from Geisinger health systems}
+Employment, medical claims (longitudinal example)
+
+
+\subsubsection{Air pollution data from Pennsylvania}
+
+
+\subsubsection{Weather data from Pennsylvania}
 
 
 \section{Methods}
