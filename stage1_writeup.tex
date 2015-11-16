@@ -37,16 +37,24 @@ Chronic obstructive pulmonary disease (COPD) is a major cause of mortality world
 
 \section{Data}
 
-The clinical data we will use in this project will include data collected from patients who are a part of the Geisinger Health System. The dataset consists of data from a total population of 88,000, among whom, 1,033 have a ``discharge diagnosis of COPD''. The clinical dataset contains approximately 80 unique variables sourced primarily from medical records with a few variables sourced from billing records. We will be comparing two sub-populations
+The clinical data we will use in this project will include data collected from 
+patients who are a part of the Geisinger Health System. The dataset consists of 
+data from a total population of 88,000, among whom, 1,033 have 
+a ``discharge diagnosis of COPD''. The clinical dataset contains approximately 
+80 unique variables sourced primarily from medical records with a few variables 
+sourced from billing records. We will be comparing two sub-populations
 
 \begin{enumerate}
 \item The COPD subpopulation: all patients who have been diagnosed with COPD.
-\item The non-COPD pneumonia subpopulation: those who are diagnosed at a single visit with pneumonia and subsequently recover. We do not include in this subpopulation those who are re-admitted at multiple visits with pneumonia, since this may be indicative of undiagnosed COPD.
+\item The non-COPD pneumonia subpopulation: those who are diagnosed at a single 
+visit with pneumonia and subsequently recover. We do not include in this 
+subpopulation those who are re-admitted at multiple visits with pneumonia, 
+since this may be indicative of undiagnosed COPD.
 \end{enumerate}
 
-
-
 \subsection{``External" data sources}
+
+\subsubsection{Key Requirements - External Data Sources}
 
 As a major focus of this project is to blend external data sources with the clinical data described above. This task is poised with a number of challenges. Firstly to ensure quality in our external data we felt that that following 
 strict requirements need to be satisfied for it to be effective in our case:
@@ -85,28 +93,117 @@ strict requirements need to be satisfied for it to be effective in our case:
           they use a lot more biofuels, then these imputed values will be 
           extremely misleading. and we will describe three possible sources 
           of data.  
+    \item This effectively ensures that the imputed data resulting from the 
+          blending process (see methods below) is as transparent and believable 
+          as possible, it is important that the external data sources come 
+          from a population that is similar to our base clinical dataset 
+          from Geisinger.  
   \end{itemize}
   \item Data contains the key fields upon which we want to “blend” on
   \begin{itemize}
     \item The primary variables which will be used to blend data are varioues 
           combinations age, gender, zipcode and date.
+    \item Ideally our dataset should have multiple combinations of these fields
+          so that we could 'blend' them for each patient and get maximum 
+          variation between patients to be used for classification purposes
   \end{itemize}
 \end{itemize}
 
-Firstly, to ensure that the imputed data resulting from the blending process (see methods below) is as transparent and believable as possible, it is important that the external data sources come from a population that is similar to our base clinical dataset from Geisinger.  
+\subsection{``External" data sources - main sources}
 
-Next, we require the data to be ``publicly available'', which we interpreted as ``easily accessible to Geisinger''. As a result, some of our ``external'' data sources include data collected by the Geisinger health system, but not included in the provided COPD clinical dataset. The primary reason for this approach is three-fold: first of all, it is extremely difficult to find individual-level data that is publicly available (presumably due to privacy concerns) AND from a trusted source (i.e. not sourced from some guy sitting in his basement making up numbers for fun); secondly, using data collected by Geisinger ensures that the underlying population mostly matches the population from which the COPD data is drawn, a key concern for the validity of the conclusions drawn from our subsequent analyses. Finally, for the publicly available individual-level data that we could find, it is extremely difficult to find adequate variables to match on. For example, in most cases, the best we could do is matching on age and gender and approximate location, however if we are aiming to impute a variable such as smoking or exposure to biomass fuel combustion, the imputed values is likely to be extremely noisy and not particularly trustworthy (for example, it is highly unlikely that all females, aged 27 who live in Danville, Pennsylvania have the same smoking status; we need more common information between the two datasets.)
-
-The most trusted publicly available data sources we could identify are significantly less granular. For example, 
+\nonindent Given this we searched for several external data sources that helped
+fit the identified requirements above. In our overall search for publicicly 
+availible external data from Pennsylvania we found the 
+following key issues overall:
 
 \begin{itemize}
-  \item 
-  \item 
-  \item 
-  \item 
-  \item 
+  \item It is extremely difficult to find individual-level data that is publicly 
+        available (presumably due to privacy concerns of citizens) \textbf{and} 
+        from a trusted source (i.e. from a government body or an organisation 
+        that is not privately funded with a particular biased agenda)
+  \item For the publicly available individual-level data that we 
+        could find, it is extremely difficult to find sufficient adequate 
+        variables to match on.         
+  \begin{itemize}
+    \item In most cases, the best data we found matched only on singular variables
+          e.g. age, gender, zip-code (approximate location) and date.
+    \item However if our aim is to impute a variable such as smoking or exposure
+          to biomass fuel combustion, the imputed values is likely 
+          to be extremely noisy and not particularly trustworthy. For example, it is 
+          highly unlikely that all females, aged 27 who live in Danville, 
+          Pennsylvania have the same smoking status; we simply need a larger 
+          combination of the common blending fields to gain information from the
+          external dataset.
+  \end{itemize}
 \end{itemize}
 
+The most trusted publicly available data sources we could identify are 
+significantly less granular than required given the above issues faced. They are 
+listed below with brief description and key issues in utilising them 
+for the blending process:
+
+\begin{itemize}
+  \item  IRS Income Statistics Data by Zipcode
+  \begin{itemize}
+    \item source: \url{https://www.irs.gov/uac/SOI-Tax-Stats-Individual-Income-Tax-Statistics-ZIP-Code-Data-(SOI)}
+    \item This is usefult to analyse change in income levels over time. 
+          Potentially useful as an indicator of stress (e.g. low income high 
+          unemployment trend) which could be a contributing factor to COPD.
+  \end{itemize}
+  \item Pennsylvania Smoking Rankings by Zipcode
+  \begin{itemize}
+    \item source: \url{http://www.countyhealthrankings.org/app/pennsylvania/2015/measure/factors/9/data}
+    \item This is only at zipcode level
+    \item Potentially useful to help distinguish patients with higher risk of
+          COPD driven by smoking.
+    \item This is potentially useful if we blend using patient-level zipcode 
+          to get the maximum level of variation from this metric in 
+          our classification methodology
+  \end{itemize}
+  \item Additional Income Level Data by Zipcode from Qubit Consulting
+  \begin{itemize}
+    \item source: \url{https://www.incomebyzipcode.com/search/}
+    \item This is publicly availible but difficult to verify credibility. It may 
+          be a useful cross-validation against the IRS income statistics 
+          data as identified above
+  \end{itemize}
+  \item Housing Vacancy Data in Pennsylvania
+  \begin{itemize}
+    \item This is split by Gender and zipcode separately unfortunately, not as
+          a composite gender-zipcode summary
+    \item There is only an overall gender distribution by zipcode provided 
+          which may be useful to help redistribute other zipcode-level metrics 
+          (e.g. population metrics) by gender. 
+  \end{itemize}
+  \item Climate and Temperature Data
+  \begin{itemize}
+    \item This is split by Zip code and has a Temporal component for blending (by month)
+    \item This could be a useful to identify longitudinal trends in temperature
+          and linking them to identifying any true pneumonia (non-COPD) cases. The 
+          hypothesis here is that colder temperatures may lead patients to 
+          suffer from pneumonia and help refine the classification
+    \item To source individual months may be a bit difficult and scraping 
+          would need to be done given the lack of API for downloading the data
+  \end{itemize}
+  \item Census Fact Finder
+  \begin{itemize}
+    \item source: \url{http://factfinder.census.gov/faces/nav/jsf/pages/community_facts.xhtml}
+    \item Has thorough census information which can be searched by PA zipcode
+    \item There is also a distribution by Gender which could be potentially be 
+          used to re-distribute other metrics collected at the zipcode level by 
+          gender
+  \end{itemize}
+  \item Flu Trends Data
+  \begin{itemize}
+    \item source: \url{https://public.tableau.com/views/s14_15_20150522/Forecasts?%3Aembed=y&%3AshowTabs=y&%3Adisplay_count=no&%3AshowVizHome=no}
+    \item This is only availible for main PA cities i.e. Philadelphia, 
+          Pittsburgh and State College
+    \item Previously part of the Google Flu Trends Project (now discontinued by 
+          Google). Could be potentially used as a crude indicator of the 
+          likelihood of pneumonia alone occurring (pneumonia can occur as 
+          a complication of the flu virus).
+  \end{itemize}
+\end{itemize}
 
 \subsubsection{Smoking data from the Geisinger psychiatric diseases dataset}
 
@@ -125,20 +222,84 @@ Employment, medical claims (longitudinal example)
 
 \section{Methods}
 
-In this section, we will describe our intended methodology for both data blending as well as our indented analysis
+In this section, we will describe our intended methodology for both data 
+blending as well as our indented analysis
 
 \subsection{Data blending}
 
-Here we will describe the data blending approach and describe methods to show that it is robust and ``reliable''
+\noindent Here we will describe the data blending approach and describe methods 
+to show that it is robust and ``reliable''.
+
+\nonindent In order to effectively blend data sources consistently, there need 
+to be established common variables upon which the features from the datasets
+can be combined. We propose the following variables as the most effective 
+method of blending external data sources to the COPD dataset provided:
+
+\begin{enumerate}
+\item Patient Age
+\item Patient Gender
+\item Patient zipcode or Hospital zipcode (less preferable)
+\item Date of Patient Treatment
+\end{enumerate}
+
+\noindent The above were deemed to be variables found commonly in publicly availible 
+external data and also ensure that they are aggregated enough to ensure that we
+do not rely on personally identifiable information (PII) for the blending process
+which will help mitigate risks related to privacy breaches of patients from 
+external data.
+
+\noindent It should be noted that the key variables we blend on can be functions 
+of the above variables e.g. if the external data is banded by age, we can band 
+our original Geisinger dataset in the same age bands as the external dataset prior 
+to blending. This ensures greater flexibility in our blending methodology.
+
+\noindent Having identified the external data sources of interest, we propose 
+to integrate, or “blend”, the sources with the clinical data as follows.
+
+\begin{itemize}
+  \item  Within each dataset, identify the variables that are common to the 
+         clinical data (such as age, gender, location, etc)
+  \item  Using the common variables we can join on the features from the 
+         external data using a composite-key values which are functions of the 
+         common variables e.g. joining by gender-age or zipcode-gender 
+         rather than just gender, age, zipcode separately. This depends on the 
+         granularity of the external data based on these common variables.
+  \item  In the above blending we should be careful to keep all observations in
+         the original dataset fixed, so that we do not lose any original 
+         information provided
+  \item  In the case where the common variables in the external data are less 
+         granular than in the original Geisinger dataset we can effectively group/ band 
+         the relevant common variables in the original dataset to be consistent
+         with the external dataset. The blending can occur on a composite key of 
+         these grouped/ banded external variables. This results in a loss of 
+         information at a patient level but may still be useful for classification
+         purposes
+  \item  In the case where many features from the external data have missing values
+         we can create a second version of the features which impute these missing 
+         values using the mean/ median value from other common variables which 
+         are not missing. In this sense we can increase the density of the merged 
+         dataset by relying on the overall median/ mean as a reasonable 'guess'
+         of the required external data. Whether this approach is useful can be
+         evaluated in terms of classification accuracy if including these features 
+         vs excluding them.
+\end{itemize}
+
+\noindent Overall the blending quality can be manually checked by taking 
+a small number of random samples from the blended dataset and ensuring that the 
+external data fields are merged correctly. The overall density of the blended 
+dataset should be calculated by field to ensure that the external dataset does 
+add sufficient non-sparse information to the original data.
 
 \subsection{Prediction}
 
-Our prediction approach, perhaps mention assessing causality (but only if we have a very clear question in mind). Discuss withholding a test set, and examples of the physical methods to take.
+Our prediction approach, perhaps mention assessing causality (but only if we 
+have a very clear question in mind). Discuss withholding a test set, and 
+examples of the physical methods to take.
 
+\noindent Overall we are effectively considering a longitudinal classification
+problem here. As such we would rely on the following key metrics:
 
 \section{Discussion}
-
-
 
 \section{Conclusion}
 
