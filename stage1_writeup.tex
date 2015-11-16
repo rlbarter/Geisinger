@@ -21,24 +21,16 @@
 \usepackage{color}
 \usepackage{bbm}
 
-
-
-
 \setlength\parindent{0pt}
-
 
 \begin{document}
 \maketitle
 
-
 \section{Abstract}
-
 
 Chronic obstructive pulmonary disease (COPD) is a major cause of mortality worldwide, however many of those with COPD remain undiagnosed. Individuals with undiagnosed COPD typically experience related adverse health effects resulting in increased utilization of health care services. One of the primary reasons for hospitalizations amongst undiagnosed COPD patients is pneumonia; amongst patients with a secondary diagnosis of acute exacerbation of Chronic obstructive pulmonary disease (COPD), pneumonia was the primary reason for hospitalization for 22.3 percent of admissions. For this project, our aim is to develop methods capable of effectively predicting cases of undiagnosed COPD amongst those whose primary reason for hospitalization was pneumonia. Most existing algorithmic approaches to this prediction problem focus only on utilizing clinical information, however we aim to incorporate external data sources primarily related to relevant socioeconomic factors that are not captured by the clinical records using a process called ``data blending''. 
 
-
 \section{Introduction}
-
 
 Chronic obstructive pulmonary disease (COPD) is a major cause of mortality worldwide~\cite{lozano_global_2012}, with approximately 12 million adults in the U.S. having been diagnosed with COPD. Crucially, however, it is estimated that a further 12 million adults in the U.S. have undiagnosed COPD~\cite{nih_chronic_2010}. One of the most common causes of COPD is cigarette smoking, however as many of 10-20\% of COPD patients have never smoked and only a fraction of smokers develop COPD. These insights are suggestive of alternate risk factors such as genetic and environmental. With this in mind, our goal is to ``blend'' external environmental data with the clinical data using a novel blending approach with the hopes of increasing our ability to predict undiagnosed COPD amongst those hospitalized with pneumonia. . 
 
@@ -56,11 +48,65 @@ The clinical data we will use in this project will include data collected from p
 
 \subsection{``External" data sources}
 
-As a major focus of this project is to blend external data sources with the clinical data described above. This task is poised with a number of challenges. Firstly, to ensure that the imputed data resulting from the blending process (see methods below) is as transparent and believable as possible, it is important that the external data sources come from a population that is similar to our base clinical dataset from Geisinger. Notably, since all Geisinger medical centers are located in Pennsylvania, ideally, we would also like our external data to be from Pennsylvania. Suppose, for example, that we were interested in testing the effect of biomass fuel combustion exposure on COPD and for our clinical population we imputed the extent of biomass fuel combustion exposure based on data sourced from developing countries in which they use a lot more biofuels, then these imputed values will be extremely misleading. and we will describe three possible sources of data. 
+As a major focus of this project is to blend external data sources with the clinical data described above. This task is poised with a number of challenges. Firstly to ensure quality in our external data we felt that that following 
+strict requirements need to be satisfied for it to be effective in our case:
+
+\begin{itemize}
+  \item Data come from a publicly availiable sources
+  \begin{itemize}
+    \item Here 'publicly availible' means stored in a digital format on the 
+          internet on secure servers which are accessible globally
+  \end{itemize}
+  \item Data source is well trusted in the data science/ statistical community
+  \begin{itemize}
+    \item In this case 'trusted source' means that the sourced data was created/ 
+          audited by an arganisation that is well cited and relied upon in the 
+          data science/ statistical community. This would generally include data
+          provided by (but not limited to) government departments
+  \end{itemize}
+  \item Data contain no Personally Identifiable Information (PII)
+  \begin{itemize}
+    \item In order to ensure that no privacy issues of any patients are breached
+          the external data sourced must contain no information on the address, 
+          name, DOB information about a specific patient/ person (PII). For data sourced  
+          within the Geisinger internal patient database care must be taken to 
+          ensure that privacy is protected through discussions with the Geisinger
+          team  
+  \end{itemize}
+  \item Data are sourced preferably from Pennsylvania to be best representative 
+        of the Geisinger population
+  \begin{itemize}
+    \item Notably, since all Geisinger medical centers are located in 
+          Pennsylvania, ideally, we would also like our external data to be from 
+          Pennsylvania. Suppose, for example, that we were interested in testing 
+          the effect of biomass fuel combustion exposure on COPD and for our 
+          clinical population we imputed the extent of biomass fuel combustion 
+          exposure based on data sourced from developing countries in which 
+          they use a lot more biofuels, then these imputed values will be 
+          extremely misleading. and we will describe three possible sources 
+          of data.  
+  \end{itemize}
+  \item Data contains the key fields upon which we want to “blend” on
+  \begin{itemize}
+    \item The primary variables which will be used to blend data are varioues 
+          combinations age, gender, zipcode and date.
+  \end{itemize}
+\end{itemize}
+
+Firstly, to ensure that the imputed data resulting from the blending process (see methods below) is as transparent and believable as possible, it is important that the external data sources come from a population that is similar to our base clinical dataset from Geisinger.  
 
 Next, we require the data to be ``publicly available'', which we interpreted as ``easily accessible to Geisinger''. As a result, some of our ``external'' data sources include data collected by the Geisinger health system, but not included in the provided COPD clinical dataset. The primary reason for this approach is three-fold: first of all, it is extremely difficult to find individual-level data that is publicly available (presumably due to privacy concerns) AND from a trusted source (i.e. not sourced from some guy sitting in his basement making up numbers for fun); secondly, using data collected by Geisinger ensures that the underlying population mostly matches the population from which the COPD data is drawn, a key concern for the validity of the conclusions drawn from our subsequent analyses. Finally, for the publicly available individual-level data that we could find, it is extremely difficult to find adequate variables to match on. For example, in most cases, the best we could do is matching on age and gender and approximate location, however if we are aiming to impute a variable such as smoking or exposure to biomass fuel combustion, the imputed values is likely to be extremely noisy and not particularly trustworthy (for example, it is highly unlikely that all females, aged 27 who live in Danville, Pennsylvania have the same smoking status; we need more common information between the two datasets.)
 
 The most trusted publicly available data sources we could identify are significantly less granular. For example, 
+
+\begin{itemize}
+  \item 
+  \item 
+  \item 
+  \item 
+  \item 
+\end{itemize}
+
 
 \subsubsection{Smoking data from the Geisinger psychiatric diseases dataset}
 
