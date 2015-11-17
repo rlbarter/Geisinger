@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: stage1_writeup.aux
+The style file: apalike.bst
+Database file #1: Geisinger.bib
+Warning--empty institution in nih_chronic_2010
+You've used 4 entries,
+            1935 wiz_defined-function locations,
+            492 strings with 8236 characters,
+and the built_in function-call counts, 7068 in all, are:
+= -- 499
+> -- 985
+< -- 3
++ -- 390
+- -- 390
+* -- 849
+:= -- 1363
+add.period$ -- 10
+call.type$ -- 4
+change.case$ -- 216
+chr.to.int$ -- 4
+cite$ -- 5
+duplicate$ -- 45
+empty$ -- 81
+format.name$ -- 396
+if$ -- 1169
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 1
+newline$ -- 21
+num.names$ -- 12
+pop$ -- 208
+preamble$ -- 1
+purify$ -- 215
+quote$ -- 0
+skip$ -- 38
+stack$ -- 0
+substring$ -- 79
+swap$ -- 1
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 24
+warning$ -- 1
+while$ -- 10
+width$ -- 0
+write$ -- 47
+(There was 1 warning)

@@ -26,10 +26,13 @@
 
 \begin{document}
 \maketitle
+\bibliographystyle{apalike}
 
 \section{Introduction}
 
-Chronic obstructive pulmonary disease (COPD) is a major cause of mortality worldwide, however many of those with COPD remain undiagnosed. Individuals with undiagnosed COPD typically experience related adverse health effects resulting in increased utilization of health care services. One of the primary reasons for hospitalizations amongst undiagnosed COPD patients is pneumonia; amongst patients with a secondary diagnosis of acute exacerbation of Chronic obstructive pulmonary disease (COPD), pneumonia was the primary reason for hospitalization for 22.3 percent of admissions. For this project, our aim is to develop methods capable of effectively predicting cases of undiagnosed COPD amongst those whose primary reason for hospitalization was pneumonia. Most existing algorithmic approaches to this prediction problem focus only on utilizing clinical information, however we aim to incorporate external data sources primarily related to relevant socioeconomic factors that are not captured by the clinical records using a process called ``data blending''. 
+Chronic obstructive pulmonary disease (COPD) is a major cause of mortality worldwidee~\cite{lozano_global_2012}, however many of those with COPD remain undiagnosed~\cite{nih_chronic_2010}. Individuals with undiagnosed COPD typically experience related adverse health effects resulting in increased utilization of health care services. One of the primary reasons for hospitalizations amongst undiagnosed COPD patients is pneumonia; amongst patients with a secondary diagnosis of acute exacerbation of Chronic obstructive pulmonary disease (COPD), pneumonia was the primary reason for hospitalization for 22.3 percent of admissions. For this project, our aim is to develop methods capable of effectively predicting cases of undiagnosed COPD amongst those whose primary reason for hospitalization was pneumonia. Most existing algorithmic approaches to this prediction problem focus only on utilizing clinical information, however we aim to incorporate external data sources primarily related to relevant socioeconomic factors that are not captured by the clinical records using a process called ``data blending''. 
+
+One of the most common causes of COPD is cigarette smoking, however as many of 10-20\% of COPD patients have never smoked and only a fraction of smokers develop COPD. These insights are suggestive of alternate risk factors such as genetic and environmental, particularly the ingestion of biomass fuel combustion. With this in mind, our goal is to ``blend'' external environmental data as well as data containing smoking information and medical claims information with the clinical data using a novel blending approach with the hopes of increasing our ability to predict undiagnosed COPD amongst those hospitalized with pneumonia. . 
 
 %\section{Introduction}
 %
@@ -55,14 +58,14 @@ since this may be indicative of undiagnosed COPD.
 
 \subsection{External data sources}
 
-As a major focus of this project is to blend external data sources with the clinical data described above. This task is poised with a number of challenges. Firstly to ensure that the external data was suitable for the task at hand, we aimed to ensure that a number of requirements were met:
-\begin{itemize}
-\item {\bf Publicly available}: We require that the data be ``publicly available'', which, here, means that the data is stored in a digital format on the internet on secure servers which are accessible globally. 
-\item {\bf Data is obtained from a trustworthy source}: The data source must be trustworthy; that is, the sourced data was created or collected by a legitimate organization, such as government departments. 
-\item {\bf The data must be de-identified}: The data much contain no Personally Identifiable Information (PII) in order to ensure that the privacy of all individuals whose information is stored in the dataset is de-identified (that is it does not contain information such as personal address, name and date-of-birth). For data sourced within the Geisinger internal patient database care must be taken to ensure that privacy is protected through discussions with the Geisinger team. 
-\item {\bf The data is representative of the population of interest}: Since all Geisinger medical centers are located in Pennsylvania, ideally, we would also like our external data to be from Pennsylvania. Suppose, for example, that we were interested in testing the effect of biomass fuel combustion exposure on COPD, and for our clinical population we imputed the extent of biomass fuel combustion exposure based on data sourced from developing countries in which they use a lot more biofuels. The imputed values from this external data source will be extremely misleading and unlikely to be representative of the amount of biomass fuel combustion on similar people (e.g. similar age, gender, occupation, etc) in developed countries.
-\item {\bf The data must contain some variables common to the clinical dataset}: The primary variables based on which we aim to blend data are various combinations of age, gender, zipcode and date. Ideally, to ensure that the blended dataset is as realistic as possible, our external dataset should have, as a bare minimum, each of these variables.
-\end{itemize}
+As a major focus of this project is to blend external data sources with the clinical data described above. This task is poised with a number of challenges. Firstly to ensure that the external data was suitable for the task at hand, we aimed to ensure that a number of requirements were met: the data must be publicly available, obtained from a trustworthy source, be de-identified, be representative of the population of interest and contain some variables common to the clinical dataset.
+%\begin{itemize}
+%\item {\bf Publicly available}: We require that the data be ``publicly available'', which, here, means that the data is stored in a digital format on the internet on secure servers which are accessible globally. 
+%\item {\bf Data is obtained from a trustworthy source}: The data source must be trustworthy; that is, the sourced data was created or collected by a legitimate organization, such as government departments. 
+%\item {\bf The data must be de-identified}: The data much contain no Personally Identifiable Information (PII) in order to ensure that the privacy of all individuals whose information is stored in the dataset is de-identified (that is it does not contain information such as personal address, name and date-of-birth). For data sourced within the Geisinger internal patient database care must be taken to ensure that privacy is protected through discussions with the Geisinger team. 
+%\item {\bf The data is representative of the population of interest}: Since all Geisinger medical centers are located in Pennsylvania, ideally, we would also like our external data to be from Pennsylvania. Suppose, for example, that we were interested in testing the effect of biomass fuel combustion exposure on COPD, and for our clinical population we imputed the extent of biomass fuel combustion exposure based on data sourced from developing countries in which they use a lot more biofuels. The imputed values from this external data source will be extremely misleading and unlikely to be representative of the amount of biomass fuel combustion on similar people (e.g. similar age, gender, occupation, etc) in developed countries.
+%\item {\bf The data must contain some variables common to the clinical dataset}: The primary variables based on which we aim to blend data are various combinations of age, gender, zipcode and date. Ideally, to ensure that the blended dataset is as realistic as possible, our external dataset should have, as a bare minimum, each of these variables.
+%\end{itemize}
 
 Although these requirements seem fairly straighforward; in practice, it turned out to be extremely difficult to find relevant publicly available individual-level data with variables common to the clinical dataset. As a result, we decided to take two alternative approaches. 
 
@@ -79,26 +82,16 @@ As mentioned above, one of the most common causes of COPD is smoking. Although t
 
 \subsubsection{Insurance data from Geisinger health systems}
 
-\noindent One of the primary causes of COPD is the inhalation of biomass fuels. In
-order to infer the likelihood of being exposed to biomass fuels a key indicator would be
-the employment history of the patient. A reliable source for this information would
-be the insurance history of the patient under the Geisinger system which would 
-record the employer of the patient and as such allow us to identify the associated 
-industry and likelihood of exposure to biomass fuels. The employment zipcode 
-would also allow for an additional longitudinal location statistic to blend.\newline
+\noindent One of the primary causes of COPD is the inhalation of biomass fuels. In order to infer the likelihood of being exposed to biomass fuels a key indicator would be the employment history of the patient. A reliable source for this information would be the insurance history of the patient under the Geisinger system which would record the employer of the patient and as such allow us to identify the associated industry and likelihood of exposure to biomass fuels. The employment zipcode 
+would also allow for an additional longitudinal location statistic to blend.
 
-\noindent Furthermore by accessing the deidentified insurance data of the patient 
-we could also get a reliable longitudinal history of the previous ailments/ treatments
-undertaken by the patient. By combining this with the ontology of diseases data 
-a clustering analysis could be undertaken to better understand which type of past ailment
-types were more closely linked to COPD.\newline
+Furthermore by accessing the deidentified insurance data of the patient 
+we could also get a reliable longitudinal history of the previous ailments/ treatments undertaken by the patient. By combining this with the ontology of diseases data a clustering analysis could be undertaken to better understand which type of past ailment types were more closely linked to COPD.
 
-\noindent We understand that this data may be sensitive, however if it is 
-cleaned and deidentified for each patient to mitigate privacy risks it becomes 
-a rich and reliable longitudinal data source on patient health/ employment history.
+We understand that this data may be sensitive, however if it is 
+cleaned and deidentified for each patient to mitigate privacy risks it becomes a rich and reliable longitudinal data source on patient health/ employment history.
 
 \subsubsection{Weather data from Pennsylvania}
-source: \url{http://www.bidmc.org/YourHealth/Holistic-Health/Health-Myths-Center.aspx?ChunkID=156976}
 Although there is no direct established link between cold/ wet weather causing 
 increased risk of pneumonia, studies have shown that cold and flu infection cases are 
 generally higher in Fall and Winter months (which could lead to pneumonia). A 
@@ -106,16 +99,12 @@ likely reason for this is that people are often contained indoors during such
 weather conditions and have a higher risk of transferring airborne diseases. 
 By longitudinally  blending recent average temperature and rainfall data 
 by patient housing zipcode and patient employment zipcode (from the insurance 
-data above) could assist in classifiying true pneumonia cases. 
+data above) could assist in classifiying true pneumonia cases~\cite{mccoy_health_2008}. 
 
 \subsubsection{Air pollution data from Pennsylvania}
-source: \url{http://www.who.int/mediacentre/factsheets/fs292/en/}
 A leading identified cause of COPD is the inhalation of biomass fuels. Often 
 this can be due to working/ living in areas which are affected by heavy air 
-pollution - particularly soot and particulate matter. This longitudinal air pollution
-data is availible from the following source:\url{https://www.portal.state.pa.us/portal/server.pt/.../principal_pollutants/21822}. However the access is restricted for the general public.
-Geisinger may be able to request access to this from the Pennsylvania government
-for use in this project.
+pollution - particularly soot and particulate matter~\cite{who_who_2014}. This longitudinal air pollution data is availible from the Pennsylvania government.
 
 \section{Data blending}
 In this section, we will describe our intended methodology for data blending. 
@@ -163,12 +152,7 @@ Our goal is to predict the unobserved values of the variables $z_{k+1}, ..., z_q
 
 \subsubsection{The matching step}
 
-To perform matching, we must be able to define a measure of distance between observations in the clinical and external datasets based on the variables that are common to both. We can define the common variables for an observation in the clinical dataset by 
-$${\bf x}_i^c = (x_{i1}^c, ..., x_{ik}^c)^T$$
-and the common variables for an observation in the external dataset by
-$${\bf x}_j^e = (x_{j1}^e, ..., x_{jk}^e)^T$$
-
-The distance between an observation $i$ in the clinical dataset and an observation $j$ in the external dataset, will be defined based on the common variables only, that is
+To perform matching, we must be able to define a measure of distance between observations in the clinical and external datasets based on the variables that are common to both. We can define the common variables for an observation in the clinical dataset by ${\bf x}_i^c = (x_{i1}^c, ..., x_{ik}^c)^T$ and the common variables for an observation in the external dataset by${\bf x}_j^e = (x_{j1}^e, ..., x_{jk}^e)^T$. The distance between an observation $i$ in the clinical dataset and an observation $j$ in the external dataset, will be defined based on the common variables only, that is
 $$d({\bf y}_i, {\bf z}_j) = d({\bf x}_i^c, {\bf x}_j^e)$$
 
 where we can define the distance metric, $d$, in a number of ways, such as the euclidean distance metric:
@@ -193,7 +177,7 @@ Next, having found matched external observations for each clinical observation, 
 
 $$z^*_{ir} = \frac{1}{t} \sum_{j=1}^t z_{jr}$$
 
-for continuous variables, or by majority vote of the $z_{hr}$ for $h = 1, ..., t$ for categorical variables. Thus, we now have a blended clinical dataset consisting of the blended clinical observations;
+for continuous variables, or by majority vote of the $z_{jr}$ for $j = 1, ..., t$ for categorical variables. Thus, we now have a blended clinical dataset consisting of the blended clinical observations;
 
 $${\bf x}^*_i = (x^c_{i1}, x^c_{i2}, ..., x^c_{ik}, y_{i(k+1)} ..., y_{ip}, z_{i(k+1)}^*, ..., z_{iq}^*)^T$$
 
@@ -304,12 +288,12 @@ For this project, our aim is to develop methods capable of effectively
 predicting cases of undiagnosed COPD amongst those whose primary reason for 
 hospitalization was pneumonia. We aim to incorporate external data sources 
 primarily related to relevant socioeconomic and climate factors that 
-are not captured by the clinical records using a process called ``data blending''.\newline
+are not captured by the clinical records using a process called ``data blending''.
 
 Our proposed requirements for the external datasets are that they are publicly
 availible to Geisinger, obtained from a trustworthy source, contain no personally 
 identifiable information (PII) on patients and are representative of the 
-Pennsylvania population of interest.\newline
+Pennsylvania population of interest.
 
 For blending purposes, the external data must contain combinations of the common
 variables - age of person, gender, zipcode and date. We have propose a two-stage 
@@ -318,7 +302,7 @@ individual in our clinical dataset, identifying individuals in the external
 dataset that are most similar in terms of the covariates common to both datasets. 
 The second stage is an imputation stage which involves imputing or predicting 
 the external variables of interest for the clinical patients by aggregating the 
-values obtained by the matched external individuals.\newline
+values obtained by the matched external individuals.
 
 In order to ensure that the data is relevant for modeling purposes we intend to 
 blend features which will help identify the underlying causes of COPD/ pneumonia. 
@@ -337,6 +321,15 @@ impact of the features included from the external data sources.
 
 
 \section{Appendix}
+
+\subsection{External data sources}
+
+
+{\bf Weather data from Pennsylvania}\\
+Data source: \\
+
+{\bf Air pollution data from Pennsylvania}\\
+Data source: \url{http://www.dep.pa.gov/Pages/default.aspx#.Vkte0a6rSso}. However the access is restricted for the general public. Geisinger may be able to request access to this from the Pennsylvania government for use in this project.
 
 \subsection{Other external data ideas}
 
@@ -407,5 +400,9 @@ for the blending process:
           a complication of the flu virus).
   \end{itemize}
 \end{itemize}
+
+
+\bibliography{Geisinger}
+
 
 \end{document}
