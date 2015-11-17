@@ -27,13 +27,13 @@
 \begin{document}
 \maketitle
 
-\section{Abstract}
+\section{Introduction}
 
 Chronic obstructive pulmonary disease (COPD) is a major cause of mortality worldwide, however many of those with COPD remain undiagnosed. Individuals with undiagnosed COPD typically experience related adverse health effects resulting in increased utilization of health care services. One of the primary reasons for hospitalizations amongst undiagnosed COPD patients is pneumonia; amongst patients with a secondary diagnosis of acute exacerbation of Chronic obstructive pulmonary disease (COPD), pneumonia was the primary reason for hospitalization for 22.3 percent of admissions. For this project, our aim is to develop methods capable of effectively predicting cases of undiagnosed COPD amongst those whose primary reason for hospitalization was pneumonia. Most existing algorithmic approaches to this prediction problem focus only on utilizing clinical information, however we aim to incorporate external data sources primarily related to relevant socioeconomic factors that are not captured by the clinical records using a process called ``data blending''. 
 
-\section{Introduction}
-
-Chronic obstructive pulmonary disease (COPD) is a major cause of mortality worldwide~\cite{lozano_global_2012}, with approximately 12 million adults in the U.S. having been diagnosed with COPD. Crucially, however, it is estimated that a further 12 million adults in the U.S. have undiagnosed COPD~\cite{nih_chronic_2010}. One of the most common causes of COPD is cigarette smoking, however as many of 10-20\% of COPD patients have never smoked and only a fraction of smokers develop COPD. These insights are suggestive of alternate risk factors such as genetic and environmental. With this in mind, our goal is to ``blend'' external environmental data with the clinical data using a novel blending approach with the hopes of increasing our ability to predict undiagnosed COPD amongst those hospitalized with pneumonia. . 
+%\section{Introduction}
+%
+%Chronic obstructive pulmonary disease (COPD) is a major cause of mortality worldwide~\cite{lozano_global_2012}, with approximately 12 million adults in the U.S. having been diagnosed with COPD. Crucially, however, it is estimated that a further 12 million adults in the U.S. have undiagnosed COPD~\cite{nih_chronic_2010}. One of the most common causes of COPD is cigarette smoking, however as many of 10-20\% of COPD patients have never smoked and only a fraction of smokers develop COPD. These insights are suggestive of alternate risk factors such as genetic and environmental. With this in mind, our goal is to ``blend'' external environmental data with the clinical data using a novel blending approach with the hopes of increasing our ability to predict undiagnosed COPD amongst those hospitalized with pneumonia. . 
 
 
 \section{Data}
@@ -92,13 +92,14 @@ As mentioned above, one of the most common causes of COPD is smoking. Although t
 
 
 \section{Data blending}
-In this section, we will describe our intended methodology for both data 
-blending for each dataset mentioned above as well as a general description of our indented analysis. Given that we have external data of various different levels of granularity, we will describe each situation individually.
+In this section, we will describe our intended methodology for data blending. Given that we have external data of various different levels of granularity, we will describe each situation individually.
 
 
 \subsection{Individual-level data blending}
 
-For the datasets for which we can perform individual-level matching, such as the Geisinger psychiatric diseases dataset and the insurance data, we have developed a two-stage blending method. The first stage is a matching stage which involves, for each individual in our clinical dataset, identifying individuals in the external dataset that are most similar in terms of the covariates common to both datasets. The second stage is an imputation stage which involves imputing or predicting the external variables of interest for the clinical patients by aggregating the values obtained by the matched external individuals. To set up some notation, for observation $i$ in the clinical dataset, we can define a vector of the $p$ observed variables by
+For the datasets for which we can perform individual-level matching, such as the Geisinger psychiatric diseases dataset and the insurance data, we have developed a two-stage blending method. The first stage is a matching stage which involves, for each individual in our clinical dataset, identifying individuals in the external dataset that are most similar in terms of the covariates common to both datasets. In order to effectively blend data sources, there need to be exist common variables using which the datasets can be combined. We propose the following variables to be the minimum required individual-level variables for blending external data sources to the COPD dataset provided: age, gender, zipcode (or hospital zipcode) and the date of patient treatment.
+
+The second stage is an imputation stage which involves imputing or predicting the external variables of interest for the clinical patients by aggregating the values obtained by the matched external individuals. To set up some notation, for observation $i$ in the clinical dataset, we can define a vector of the $p$ observed variables by
 $${\bf y}_i = (y_{i1}, ..., y_{ip})^T, ~~~~~ i = 1, ..., n$$
 
 similarly, for the $j$th observation in the external dataset, we can define a vector of the $q$ observed variables by
@@ -148,17 +149,41 @@ $$d_{euclidean}({\bf x}_i^c, {\bf x}_j^e) = \sum_{l=1}^k(x_{ij}^c - x_{jl}^e)^2,
 the Mahalanobis distance metric:
 $$d_{mahalanobis}({\bf x}_i^c, {\bf x}_j^e) = \sqrt{({\bf x}_i^c - {\bf x}_j^e)^T S^{-1}({\bf x}_i^c - {\bf x}_j^e)},$$
 
-where $S = cov({\bf x}_i^c, {\bf x}_j^e)$ is the covariance matrix, and the inverse correlation metric:
+where $S = cov({\bf x}_i^c, {\bf x}_j^e)$ is the covariance matrix, the correlation metric:
 
 $$d_{corr}({\bf x}_i^c, {\bf x}_j^e) = 1 - corr({\bf x}_i^c, {\bf x}_j^e)$$
 
+or any of the large number of other distance metrics.
+
+
+For a clinical observation, ${\bf y}_i$, we define a \emph{matched} external observation, to be any ${\bf z}_j$ such that $d({\bf y}_i, {\bf z}_j) = d({\bf x}^c_i, {\bf x}^e_j) < \lambda$ for some threshold, $\lambda$, which could be chosen by a number of methods such as cross-validation to find the value of $\lambda$ that yields the lowest prediction error. 
 
 \subsubsection{The imputation step}
 
 
+Next, having found matched external observations for each clinical observation, we can impute the values of the external variables of interest that were not present in the clinical dataset. More specifically, suppose that for a clinical observation ${\bf y}_i$, we have $t$ matched external observations, ${\bf z}_1, ..., {\bf z}_t$. We could impute the external observations of interest for the clinical observation by  defining $z^*_{i(k+1)}, ..., z^*_{iq}$ by
+
+$$z^*_{ir} = \frac{1}{t} \sum_{j=1}^t z_{jr}$$
+
+for continuous variables, or by majority vote of the $z_{hr}$ for $h = 1, ..., t$ for categorical variables. Thus, we now have a blended clinical dataset consisting of the blended clinical observations;
+
+$${\bf x}^*_i = (x^c_{i1}, x^c_{i2}, ..., x^c_{ik}, y_{i(k+1)} ..., y_{ip}, z_{i(k+1)}^*, ..., z_{iq}^*)^T$$
+
+which contains all of the original observations in ${\bf x}_i$ along with the imputed observations based on the external matched observations.
+
+An alternative approach which does not involve deciding on a threshold, $\lambda$, for matched observations, is to perform \emph{weighted imputation}. To perform weighted imputation, instead of simply averaging over the external observations most similar to the clinical observation of interest, we calculate a weighted average over all of the external observations, where the external observations ``closest'' to the clinical observation get the highest weights and those furthest get the lowest weights:
+
+$$z^*_{ir} = \frac{1}{m} \sum_{j=1}^m \frac{z_{jr}}{d({\bf y}_{ir}, {\bf z}_{j})}$$
+
 \subsubsection{Assessing reliability}
 
-assess reliability: compare with if we used the obesity dataset. Comapre over subsetting and different imputation methods, etc.
+Having performed the data blending, how can we tell that it is (a) stable (do not have extremely large variance) and (b) meaningful (i.e. close to the values of the external covariates that the clinical observations would have obtained). We here propose a number of tests that can be used to assess the reliability of the imputed values. First, we could compare the values imputed using a similar, but different dataset (for example, if we had used to psychiatric diseases dataset, we could compare with the values we obtained if we had imputed using the obesity dataset). Next, we could assess how the blending method performed when imputing a common variable, and assessing how close the imputed values are to the true values. We could also compare the results of different distance metrics, as well as different matching threshold values. Further, we could assess stability by randomly witholding subsets of the data and assessing how much the imputed values and predictions change (ideally, there will be little difference).
+
+
+\subsection{Region-level data blending}
+
+
+For the air-quality and weather datasets, we have only data at the zip-code level. As a result, the blending is simple: for each clinical observation we impute the values of the air-quality/weather variables to be the values that correspond to the zip-code region in which they live or which contains the medical center that they attended.
 
 %
 %\noindent Here we will describe the data blending approach and describe methods 
@@ -227,7 +252,7 @@ assess reliability: compare with if we used the obesity dataset. Comapre over su
 
 
 
-\subsection{Prediction}
+\section{Prediction}
 
 Our prediction approach, perhaps mention assessing causality (but only if we 
 have a very clear question in mind). Discuss withholding a test set, and 
