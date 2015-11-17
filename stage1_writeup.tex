@@ -263,25 +263,29 @@ For the air-quality and weather datasets, we have only data at the zip-code leve
 
 \section{Prediction}
 
-Our prediction approach, perhaps mention assessing causality (but only if we 
-have a very clear question in mind). Discuss withholding a test set, and 
-examples of the physical methods to take.
+Recall that our primary goal is to be able to predict undiagnosed COPD amongst patients who are diagnosed with pneumonia. The first thing that we woudl like to identify is whether there are subpopulations whose COPD status can be effectively predicted using the clinical data alone. Our approach will focus on, not improving the prediction for the overall population, but specifically idenftifying whether the incorporation of external information can improve the prediction accuracy on those whose COPD status cannot be predicted using clinical data alone.
 
-\noindent Overall we are effectively considering a longitudinal classification
-problem here. As such we would rely on the following key metrics:
 
-\subsubsection{Classification Metrics}
-source: \url{http://blog.dato.com/how-to-evaluate-machine-learning-models-part-2a-classification-metrics}
-\begin{itemize}
-  \item  Overall classification accuracy
-  \item  Per-class accuracy--the average of the accuracy for each class
-  \item  Confusion Matrix
-  \item  Log-loss to guage a sense of entropy of classification and help tune 
-         model to minimise cross entropy
-  \item  Area Under Curve (AUC) and Receiver Operating Characteristic (ROC)
-\end{itemize}
 
-\subsubsection{Key framework to evaluating effectieveness of the external data}
+
+\subsection{Prediction methods}
+Our prediction approach, comes from two different angles. The first is to use standard prediction approaches (such as random forest, support vector machines, linear discriminant analysis) using the extra external variables as additional predictors. However, this approach does not utilize the longitudinal information contained in the dataset at all; particularly the fact that the dataset contains repeated observations from the same individuals over time. Further, these individuals are nested within hospitals. 
+
+Thus, the second approach that we would like to take is somewhat more complex because we would like to utilize the longitudinal features of the dataset. For instance, we might like to fit a logistic regression model where the coefficients are fit using generalized estimating equations (GEE) if we are interested in a population interpretation of the model coefficients, or mixed effect models if we are interested in an individual-level interpretation of the model coefficients. The primary advantage of using these longitudinal methods is that we can specify, and thus make us of, the correlation structure that exists between the observations (at the individual and the hospital level).
+
+Further, the utilization of longitudinal approaches allows us to identify changes over time that might contribute to evidence that one has COPD that is not captured by considering a cross-sectional view of the data. There exist a number of other classification methods for longitudinal data that we would also like to try, such as extensions of functional data analysis for random trajectories to binary regression models for longitudinal data~\cite{muller_functional_2005} as well as quadratic inference function classifiers~\cite{wang_efficient_2014}.
+
+
+\subsection{Feature selection}
+
+One of our primary interests in the identification of which external variables are useful in predicting undiagnosed COPD. We propose to perform various feature selection methods (to identify the most informative features, rather than simply throwing in all available features). These include stepwise (sequential) feature selection approaches for classification~\cite{zhou_streamwise_2006}, which can be combined with cross-validation to identify the set of features that minimize the predictive accuracy.
+
+
+
+\subsection{Evaluation metrics}
+Prior to our prediction analysis, we intend to withold a subset of the data to act as a test set. Once we have decided on our final model(s) which were build using the remainder of the data (the training set) we will evaluate its effectiveness based on how well it predicts COPD on the witheld test set based on a number of measures including the overall classification accuracy, the within-class accuracy (the average of the accuracy for each class), the log-loss to guage a sense of entropy of classification and help tune model to minimise cross entropy, and the Area Under Curve (AUC) and Receiver Operating Characteristic (ROC).
+
+
 
 \section{Conclusion}
 For this project, our aim is to develop methods capable of effectively 
@@ -320,18 +324,16 @@ models will be undertaken by utilising several common classification metrics (co
 impact of the features included from the external data sources.
 
 
-\section{Appendix}
-
-\subsection{External data sources}
+\section*{Appendix: External data sources}
 
 
 {\bf Weather data from Pennsylvania}\\
-Data source: \\
+Data source: \url{http://www.ncdc.noaa.gov/data-access}\\
 
 {\bf Air pollution data from Pennsylvania}\\
 Data source: \url{http://www.dep.pa.gov/Pages/default.aspx#.Vkte0a6rSso}. However the access is restricted for the general public. Geisinger may be able to request access to this from the Pennsylvania government for use in this project.
 
-\subsection{Other external data ideas}
+\section*{Appendix: Other external data ideas}
 
 Despite these challenges this we searched for several external data sources that might fit the identified requirements above. The most trusted publicly available data sources we could identify are 
 significantly less granular than required given the above issues faced. They are 

@@ -47,10 +47,21 @@ Lozano, R., Naghavi, M., Foreman, K., Lim, S., Shibuya, K., Aboyans, V.,
 McCoy, K. and {MS} (2008).
 \newblock Health {Myths} {Center}.
 
+\bibitem[Müller, 2005]{muller_functional_2005}
+Müller, H.-G. (2005).
+\newblock Functional {Modelling} and {Classification} of {Longitudinal}
+  {Data}*.
+\newblock {\em Scandinavian Journal of Statistics}, 32(2):223--240.
+
 \bibitem[NIH, 2010]{nih_chronic_2010}
 NIH (2010).
 \newblock Chronic {Obstructive} {Pulmonary} {Disease}.
 \newblock Technical report.
+
+\bibitem[Wang and Qu, 2014]{wang_efficient_2014}
+Wang, X. and Qu, A. (2014).
+\newblock Efficient classification for longitudinal data.
+\newblock {\em Computational Statistics \& Data Analysis}, 78:119--134.
 
 \bibitem[WHO, 2014]{who_who_2014}
 WHO (2014).
