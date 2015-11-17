@@ -78,21 +78,49 @@ As mentioned above, one of the most common causes of COPD is smoking. Although t
 
 
 \subsubsection{Insurance data from Geisinger health systems}
-\textcolor{red}{Write something about (1) the longitudinal flurry of medical claims/hospitalizations that preceeds COPD diagnosis - information that can be obtained from the insurance data (although this could be found in our clinical data too?), and/or (2) the employment information; biofuels inhalation idea}
 
+\noindent One of the primary causes of COPD is the inhalation of biomass fuels. In
+order to infer the likelihood of being exposed to biomass fuels a key indicator would be
+the employment history of the patient. A reliable source for this information would
+be the insurance history of the patient under the Geisinger system which would 
+record the employer of the patient and as such allow us to identify the associated 
+industry and likelihood of exposure to biomass fuels. The employment zipcode 
+would also allow for an additional longitudinal location statistic to blend.\newline
 
-\subsubsection{Air pollution data from Pennsylvania}
-\textcolor{red}{Write about this too!}
+\noindent Furthermore by accessing the deidentified insurance data of the patient 
+we could also get a reliable longitudinal history of the previous ailments/ treatments
+undertaken by the patient. By combining this with the ontology of diseases data 
+a clustering analysis could be undertaken to better understand which type of past ailment
+types were more closely linked to COPD.\newline
+
+\noindent We understand that this data may be sensitive, however if it is 
+cleaned and deidentified for each patient to mitigate privacy risks it becomes 
+a rich and reliable longitudinal data source on patient health/ employment history.
 
 \subsubsection{Weather data from Pennsylvania}
-\textcolor{red}{And this!}
+source: \url{http://www.bidmc.org/YourHealth/Holistic-Health/Health-Myths-Center.aspx?ChunkID=156976}
+Although there is no direct established link between cold/ wet weather causing 
+increased risk of pneumonia, studies have shown that cold and flu infection cases are 
+generally higher in Fall and Winter months (which could lead to pneumonia). A 
+likely reason for this is that people are often contained indoors during such 
+weather conditions and have a higher risk of transferring airborne diseases. 
+By longitudinally  blending recent average temperature and rainfall data 
+by patient housing zipcode and patient employment zipcode (from the insurance 
+data above) could assist in classifiying true pneumonia cases. 
 
-
-
-
+\subsubsection{Air pollution data from Pennsylvania}
+source: \url{http://www.who.int/mediacentre/factsheets/fs292/en/}
+A leading identified cause of COPD is the inhalation of biomass fuels. Often 
+this can be due to working/ living in areas which are affected by heavy air 
+pollution - particularly soot and particulate matter. This longitudinal air pollution
+data is availible from the following source:\url{https://www.portal.state.pa.us/portal/server.pt/.../principal_pollutants/21822}. However the access is restricted for the general public.
+Geisinger may be able to request access to this from the Pennsylvania government
+for use in this project.
 
 \section{Data blending}
-In this section, we will describe our intended methodology for data blending. Given that we have external data of various different levels of granularity, we will describe each situation individually.
+In this section, we will describe our intended methodology for data blending. 
+Given that we have external data of various different levels of granularity, 
+we will describe each situation individually.
 
 
 \subsection{Individual-level data blending}
@@ -249,9 +277,6 @@ For the air-quality and weather datasets, we have only data at the zip-code leve
 %dataset should be calculated by field to ensure that the external dataset does 
 %add sufficient non-sparse information to the original data.
 
-
-
-
 \section{Prediction}
 
 Our prediction approach, perhaps mention assessing causality (but only if we 
@@ -274,20 +299,46 @@ source: \url{http://blog.dato.com/how-to-evaluate-machine-learning-models-part-2
 
 \subsubsection{Key framework to evaluating effectieveness of the external data}
 
-\noindent
-
-
-\section{Discussion}
-
 \section{Conclusion}
+For this project, our aim is to develop methods capable of effectively 
+predicting cases of undiagnosed COPD amongst those whose primary reason for 
+hospitalization was pneumonia. We aim to incorporate external data sources 
+primarily related to relevant socioeconomic and climate factors that 
+are not captured by the clinical records using a process called ``data blending''.\newline
 
+Our proposed requirements for the external datasets are that they are publicly
+availible to Geisinger, obtained from a trustworthy source, contain no personally 
+identifiable information (PII) on patients and are representative of the 
+Pennsylvania population of interest.\newline
+
+For blending purposes, the external data must contain combinations of the common
+variables - age of person, gender, zipcode and date. We have propose a two-stage 
+blending method. The first stage is a matching stage which involves, for each 
+individual in our clinical dataset, identifying individuals in the external 
+dataset that are most similar in terms of the covariates common to both datasets. 
+The second stage is an imputation stage which involves imputing or predicting 
+the external variables of interest for the clinical patients by aggregating the 
+values obtained by the matched external individuals.\newline
+
+In order to ensure that the data is relevant for modeling purposes we intend to 
+blend features which will help identify the underlying causes of COPD/ pneumonia. 
+We propose using publicly availible datasets such as weather and pollution data 
+which can be combined using zipcode and date. Furthermore we propose that we utilise
+deidentified Geisinger patient-level insurance data to obtain a rich longitudinal dataset    
+caputuring socioeconomic indicators which may be relevant for COPD classification.
+
+For predictive modeling we aim ti utilise a combination of modelling techniques
+which employ supervised machine learning (logistic regression, random forests etc) 
+and also established longitudinal data analysis methods to leverage the temporal 
+component of the panel data collected on patients. The evaluation of these 
+models will be undertaken by utilising several common classification metrics (confusion matrix
+, classifcation rate etc) as well as a stepwise approach to assessing the 
+impact of the features included from the external data sources.
 
 
 \section{Appendix}
 
 \subsection{Other external data ideas}
-
-
 
 Despite these challenges this we searched for several external data sources that might fit the identified requirements above. The most trusted publicly available data sources we could identify are 
 significantly less granular than required given the above issues faced. They are 
@@ -356,127 +407,5 @@ for the blending process:
           a complication of the flu virus).
   \end{itemize}
 \end{itemize}
-
-<<<<<<< HEAD
-\subsubsection{Smoking data from the Geisinger psychiatric diseases dataset}
-
-As mentioned above, one of the most common causes of the
-
-
-\subsubsection{Insurance data from Geisinger health systems}
-Employment, medical claims (longitudinal example)
-
-
-\subsubsection{Air pollution data from Pennsylvania}
-
-
-\subsubsection{Weather data from Pennsylvania}
-
-
-\section{Methods}
-
-In this section, we will describe our intended methodology for both data 
-blending as well as our indented analysis
-
-\subsection{Data blending}
-
-\noindent Here we will describe the data blending approach and describe methods 
-to show that it is robust and ``reliable''.
-
-\nonindent In order to effectively blend data sources consistently, there need 
-to be established common variables upon which the features from the datasets
-can be combined. We propose the following variables as the most effective 
-method of blending external data sources to the COPD dataset provided:
-
-\begin{enumerate}
-\item Patient Age
-\item Patient Gender
-\item Patient zipcode or Hospital zipcode (less preferable)
-\item Date of Patient Treatment
-\end{enumerate}
-
-\noindent The above were deemed to be variables found commonly in publicly availible 
-external data and also ensure that they are aggregated enough to ensure that we
-do not rely on personally identifiable information (PII) for the blending process
-which will help mitigate risks related to privacy breaches of patients from 
-external data.
-
-\noindent It should be noted that the key variables we blend on can be functions 
-of the above variables e.g. if the external data is banded by age, we can band 
-our original Geisinger dataset in the same age bands as the external dataset prior 
-to blending. This ensures greater flexibility in our blending methodology.
-
-\noindent Having identified the external data sources of interest, we propose 
-to integrate, or “blend”, the sources with the clinical data as follows.
-
-\begin{itemize}
-  \item  Within each dataset, identify the variables that are common to the 
-         clinical data (such as age, gender, location, etc)
-  \item  Using the common variables we can join on the features from the 
-         external data using a composite-key values which are functions of the 
-         common variables e.g. joining by gender-age or zipcode-gender 
-         rather than just gender, age, zipcode separately. This depends on the 
-         granularity of the external data based on these common variables.
-  \item  In the above blending we should be careful to keep all observations in
-         the original dataset fixed, so that we do not lose any original 
-         information provided
-  \item  In the case where the common variables in the external data are less 
-         granular than in the original Geisinger dataset we can effectively group/ band 
-         the relevant common variables in the original dataset to be consistent
-         with the external dataset. The blending can occur on a composite key of 
-         these grouped/ banded external variables. This results in a loss of 
-         information at a patient level but may still be useful for classification
-         purposes
-  \item  In the case where many features from the external data have missing values
-         we can create a second version of the features which impute these missing 
-         values using the mean/ median value from other common variables which 
-         are not missing. In this sense we can increase the density of the merged 
-         dataset by relying on the overall median/ mean as a reasonable 'guess'
-         of the required external data. Whether this approach is useful can be
-         evaluated in terms of classification accuracy if including these features 
-         vs excluding them.
-\end{itemize}
-
-\noindent Overall the blending quality can be manually checked by taking 
-a small number of random samples from the blended dataset and ensuring that the 
-external data fields are merged correctly. The overall density of the blended 
-dataset should be calculated by field to ensure that the external dataset does 
-add sufficient non-sparse information to the original data.
-
-\subsection{Prediction}
-
-Our prediction approach, perhaps mention assessing causality (but only if we 
-have a very clear question in mind). Discuss withholding a test set, and 
-examples of the physical methods to take.
-
-\noindent Overall we are effectively considering a longitudinal classification
-problem here. As such we would rely on the following key metrics:
-
-\subsubsection{Classification Metrics}
-source: \url{http://blog.dato.com/how-to-evaluate-machine-learning-models-part-2a-classification-metrics}
-\begin{itemize}
-  \item  Overall classification accuracy
-  \item  Per-class accuracy--the average of the accuracy for each class
-  \item  Confusion Matrix
-  \item  Log-loss to guage a sense of entropy of classification and help tune 
-         model to minimise cross entropy
-  \item  Area Under Curve (AUC) and Receiver Operating Characteristic (ROC)
-\end{itemize}
-
-\subsubsection{Key framework to evaluating effectieveness of the external data}
-
-\noindent 
-
-
-\section{Discussion}
-
-\section{Conclusion}
-
-
-=======
->>>>>>> 23b6912b0c02c8a5942f433cdedc3e6ce5e1640e
-
-
-
 
 \end{document}
