@@ -30,7 +30,7 @@
 
 \section{Introduction}
 
-Chronic obstructive pulmonary disease (COPD) is a major cause of mortality worldwidee~\cite{lozano_global_2012}, with approximately 12 million adults in the U.S. having been diagnosed with COPD. Crucially, however, it is estimated that a further 12 million adults in the U.S. have undiagnosed COPD~\cite{nih_chronic_2010}. Individuals with undiagnosed COPD typically experience related adverse health effects, and one of the primary reasons for hospitalizations amongst undiagnosed COPD patients is pneumonia. Amongst patients with a secondary diagnosis of acute exacerbation of COPD, pneumonia was the primary reason for hospitalization for 22.3 percent of admissions. For this project, our aim is to develop methods capable of effectively predicting cases of undiagnosed COPD amongst those whose primary reason for hospitalization was pneumonia. Most existing algorithmic approaches to this prediction problem focus only on utilizing clinical information, however we aim to incorporate external data sources that are not captured by the clinical records using a process called ``data blending''. 
+Chronic obstructive pulmonary disease (COPD) is a major cause of mortality worldwide~\cite{lozano_global_2012}, with approximately 12 million adults in the U.S. having been diagnosed with COPD. Crucially, however, it is estimated that a further 12 million adults in the U.S. have undiagnosed COPD~\cite{nih_chronic_2010}. Individuals with undiagnosed COPD typically experience related adverse health effects, and one of the primary reasons for hospitalizations amongst undiagnosed COPD patients is pneumonia. Amongst patients with a secondary diagnosis of acute exacerbation of COPD, pneumonia was the primary reason for hospitalization for 22.3 percent of admissions. For this project, our aim is to develop methods capable of effectively predicting cases of undiagnosed COPD amongst those whose primary reason for hospitalization was pneumonia. Most existing algorithmic approaches to this prediction problem focus only on utilizing clinical information, however we aim to incorporate external data sources that are not captured by the clinical records using a process called ``data blending''. 
 
 One of the most common causes of COPD is cigarette smoking, however as many of 10-20\% of COPD patients have never smoked and only a fraction of smokers develop COPD. These insights are suggestive of alternate risk factors such as genetic and environmental, particularly the ingestion of biomass fuel combustion. With this in mind, our goal is to blend external environmental data as well as data containing smoking information and insurance information with the clinical data using a novel blending approach with the hopes of increasing our ability to predict undiagnosed COPD amongst those hospitalized with pneumonia. 
 
@@ -58,7 +58,7 @@ A a major focus of this project is to blend external data sources with the clini
 %\item {\bf The data must contain some variables common to the clinical dataset}: The primary variables based on which we aim to blend data are various combinations of age, gender, zipcode and date. Ideally, to ensure that the blended dataset is as realistic as possible, our external dataset should have, as a bare minimum, each of these variables.
 %\end{itemize}
 
-Although these requirements seem fairly straighforward; in practice, it turned out to be extremely difficult to find relevant publicly available individual-level data from a trusted source with more than three variables common to the clinical dataset. For example, in most cases, the best we could do is matching on age, gender and approximate location, however if we are aiming to impute a variable such as smoking or exposure to biomass fuel combustion, the imputed values is likely to be extremely noisy and not particularly trustworthy (for example, it is highly unlikely that all females, aged 27 who live in Danville, Pennsylvania have the same smoking status; we need more common information between the two datasets). As a result, we decided to take two alternative approaches. 
+Although these requirements seem fairly straighforward; in practice, it turned out to be extremely difficult to find relevant publicly available individual-level data from a trusted source with more than three variables common to the clinical dataset. For example, in most cases, the best we could do is matching on age, gender or approximate location, however if we are aiming to impute a variable such as smoking or exposure to biomass fuel combustion, the imputed values is likely to be extremely noisy and not particularly trustworthy (for example, it is highly unlikely that all females, aged 27 who live in Danville, Pennsylvania have the same smoking status; we need more common information between the two datasets). As a result, we decided to take two alternative approaches. 
 
 First, we first propose to use individual-level data collected within the Geisinger health system, but not included in the provided COPD clinical dataset. Such data is particularly ideal as it ensures that the underlying population matches the population from which the COPD data is drawn, a key concern for the validity of the conclusions drawn from our subsequent analyses. Further, such data sources have a number of variables common to the COPD dataset that would be suitable for matching (see the methods below).
 
@@ -73,7 +73,7 @@ As mentioned above, one of the most common causes of COPD is smoking. Although t
 
 \subsubsection{Insurance data from Geisinger health systems}
 
-\noindent One of the primary causes of COPD is the inhalation of biomass fuels. In order to infer the likelihood of being exposed to biomass fuels, a key indicator would be the employment history of the patient. A reliable source for this information would be the insurance history of the patient under the Geisinger system which would record the employer of the patient and as such allow us to identify the associated industry and likelihood of exposure to biomass fuels. The employment zipcode would also allow for an additional longitudinal location statistic to blend.
+\noindent One of the primary causes of COPD is the inhalation of biomass fuels. In order to infer the likelihood of being exposed to biomass fuels, a key indicator would be the employment history of the patient. A reliable source for this information would be the insurance history of the patient under the Geisinger system which would record the employer of the patient and as such allow us to identify the associated industry and likelihood of exposure to biomass fuels. The employment zipcode would also allow for an additional longitudinal location statistic upon which to blend.
 
 Furthermore, deidentified insurance data would also provide a reliable longitudinal history of the previous ailments/treatments undertaken by the patient. By combining this with the ontology of diseases data a clustering analysis could be undertaken to better understand which type of past ailment types were more closely linked to COPD.
 
@@ -259,7 +259,7 @@ which can be combined using zipcode and date. Furthermore we propose that we uti
 deidentified Geisinger patient-level insurance data to obtain a rich longitudinal dataset    
 caputuring socioeconomic indicators which may be relevant for COPD classification.
 
-For predictive modeling we aim ti utilise a combination of modelling techniques
+For predictive modeling we aim to utilise a combination of modelling techniques
 which employ supervised machine learning (logistic regression, random forests etc) 
 and also established longitudinal data analysis methods to leverage the temporal 
 component of the panel data collected on patients. The evaluation of these 
@@ -312,10 +312,11 @@ $$z^*_{ir} = \frac{1}{m} \sum_{j=1}^m \frac{z_{jr}}{d({\bf y}_{ir}, {\bf z}_{j})
 
 
 {\bf Weather data from Pennsylvania}\\
-Data source: \url{http://www.ncdc.noaa.gov/data-access}\\
+Data source: \url{http://www.ncdc.noaa.gov/cag/time-series/us}\\
 
 {\bf Air pollution data from Pennsylvania}\\
-Data source: \url{http://www.dep.pa.gov/Pages/default.aspx#.Vkte0a6rSso}. However the access is restricted for the general public. Geisinger may be able to request access to this from the Pennsylvania government for use in this project.
+Data source: \url{http://www.dep.pa.gov/Pages/default.aspx#.Vkte0a6rSso}. However the access is restricted for the general public. Geisinger may be able to request access to this from the Pennsylvania government for use in this project. This will give access to the following portal
+\url{https://www.portal.state.pa.us/siteminderagent/forms/login.fcc}
 
 \section*{Appendix: Other external data ideas}
 
@@ -349,16 +350,9 @@ for the blending process:
           be a useful cross-validation against the IRS income statistics 
           data as identified above
   \end{itemize}
-  \item Housing Vacancy Data in Pennsylvania
-  \begin{itemize}
-    \item This is split by Gender and zipcode separately unfortunately, not as
-          a composite gender-zipcode summary
-    \item There is only an overall gender distribution by zipcode provided 
-          which may be useful to help redistribute other zipcode-level metrics 
-          (e.g. population metrics) by gender. 
-  \end{itemize}
   \item Climate and Temperature Data
   \begin{itemize}
+    \item source: \url{http://www.ncdc.noaa.gov/cag/time-series/us}
     \item This is split by Zip code and has a Temporal component for blending (by month)
     \item This could be a useful to identify longitudinal trends in temperature
           and linking them to identifying any true pneumonia (non-COPD) cases. The 

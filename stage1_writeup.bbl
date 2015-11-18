@@ -67,4 +67,9 @@ Wang, X. and Qu, A. (2014).
 WHO (2014).
 \newblock {WHO} {\textbar} {Household} air pollution and health.
 
+\bibitem[Zhou et~al., 2006]{zhou_streamwise_2006}
+Zhou, J., Foster, D.~P., Stine, R.~A., and Ungar, L.~H. (2006).
+\newblock Streamwise feature selection.
+\newblock {\em The Journal of Machine Learning Research}, 7:1861--1885.
+
 \end{thebibliography}

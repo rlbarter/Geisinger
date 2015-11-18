@@ -4,45 +4,45 @@ The top-level auxiliary file: stage1_writeup.aux
 The style file: apalike.bst
 Database file #1: Geisinger.bib
 Warning--empty institution in nih_chronic_2010
-You've used 6 entries,
+You've used 7 entries,
             1935 wiz_defined-function locations,
-            505 strings with 8538 characters,
-and the built_in function-call counts, 7830 in all, are:
-= -- 579
-> -- 1005
+            513 strings with 8717 characters,
+and the built_in function-call counts, 8303 in all, are:
+= -- 626
+> -- 1028
 < -- 5
-+ -- 396
-- -- 396
-* -- 914
-:= -- 1493
-add.period$ -- 16
-call.type$ -- 6
-change.case$ -- 229
-chr.to.int$ -- 6
-cite$ -- 7
-duplicate$ -- 73
-empty$ -- 140
-format.name$ -- 406
-if$ -- 1318
++ -- 404
+- -- 404
+* -- 958
+:= -- 1575
+add.period$ -- 19
+call.type$ -- 7
+change.case$ -- 238
+chr.to.int$ -- 7
+cite$ -- 8
+duplicate$ -- 87
+empty$ -- 171
+format.name$ -- 415
+if$ -- 1408
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 3
-newline$ -- 31
-num.names$ -- 18
-pop$ -- 215
+missing$ -- 4
+newline$ -- 36
+num.names$ -- 21
+pop$ -- 222
 preamble$ -- 1
-purify$ -- 228
+purify$ -- 237
 quote$ -- 0
-skip$ -- 60
+skip$ -- 70
 stack$ -- 0
-substring$ -- 153
-swap$ -- 3
+substring$ -- 196
+swap$ -- 4
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 36
+type$ -- 42
 warning$ -- 1
-while$ -- 18
+while$ -- 22
 width$ -- 0
-write$ -- 73
+write$ -- 86
 (There was 1 warning)
